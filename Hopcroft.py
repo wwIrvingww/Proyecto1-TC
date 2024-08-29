@@ -38,9 +38,12 @@ def create_dfa_json():
     # Step 3: Convert dictionary to JSON string
     dfa_json = json.dumps(dfa, indent=2)
     
-    # Step 4: Print or return the JSON string
-    print("Generated DFA JSON:")
-    print(dfa_json)
+    # Step 4: Save the JSON string to a file
+    filename = input("Enter the filename to save the DFA (e.g., 'dfa.json'): ").strip()
+    with open(filename, "w") as json_file:
+        json_file.write(dfa_json)
+    
+    print(f"DFA JSON has been saved to {filename}")
     
     return dfa_json
 
