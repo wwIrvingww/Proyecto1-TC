@@ -1,51 +1,40 @@
-import json
+import itertools
 
-def create_dfa_json():
-    # Step 1: Input DFA components from the user
+def cross_product_accept_not_accept(afn):
+    # Extracting the states and accepting states from the AFN
+    states = afn["Q"]
+    accepting_states = afn["F"]
     
-    # Input states
-    states = input("Enter the states (comma-separated): ").split(',')
-    states = [state.strip() for state in states]
+    # Identifying non-accepting states
+    non_accepting_states = [state for state in states if state not in accepting_states]
     
-    # Input alphabet
-    alphabet = input("Enter the alphabet (comma-separated): ").split(',')
-    alphabet = [symbol.strip() for symbol in alphabet]
+    # Compute the cross product of accepting states x non-accepting states
+    cross_product = list(itertools.product(accepting_states, non_accepting_states))
     
-    # Input initial state
-    initial_state = input("Enter the initial state: ").strip()
+    # Print the cross product
+    print("Cross Product of Accepting States x Non-Accepting States:")
+    for pair in cross_product:
+        print(pair)
     
-    # Input accepting states
-    accepting_states = input("Enter the accepting states (comma-separated): ").split(',')
-    accepting_states = [state.strip() for state in accepting_states]
-    
-    # Input transitions
-    transitions = {}
-    print("Enter the transition function:")
-    for state in states:
-        for symbol in alphabet:
-            next_state = input(f"Transition from ({state},{symbol}): ").strip()
-            transitions[f"({state},{symbol})"] = next_state
-    
-    # Step 2: Construct the DFA dictionary
-    dfa = {
-        "Q": states,
-        "Σ": alphabet,
-        "q0": initial_state,
-        "F": accepting_states,
-        "δ": transitions
+    return cross_product
+
+
+afn_example = {
+    "Q": ["s", "q1", "q2", "q3"],
+    "Σ": ["a", "b"],
+    "q0": "s",
+    "F": ["q3", "q2"],
+    "δ": {
+        "(s,a)": "q1",
+        "(s,b)": "q3",
+        "(q1,a)": "q2",
+        "(q1,b)": "s",
+        "(q2,a)": "q2",
+        "(q2,b)": "q2",
+        "(q3,a)": "q2",
+        "(q3,b)": "q2"
     }
-    
-    # Step 3: Convert dictionary to JSON string
-    dfa_json = json.dumps(dfa, indent=2)
-    
-    # Step 4: Save the JSON string to a file
-    filename = input("Enter the filename to save the DFA (e.g., 'dfa.json'): ").strip()
-    with open(filename, "w") as json_file:
-        json_file.write(dfa_json)
-    
-    print(f"DFA JSON has been saved to {filename}")
-    
-    return dfa_json
+}
 
-# Example usage
-dfa_json_str = create_dfa_json()
+
+cross_product_list = cross_product_accept_not_accept(afn_example)
