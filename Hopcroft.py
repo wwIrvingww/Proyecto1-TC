@@ -19,8 +19,8 @@ def find_transition_pairs(afn, cross_product):
         current_pairs = list(new_pairs)
         for (q_accept, q_non_accept) in current_pairs:
             for symbol in alphabet:
-                q_accept_from = None
-                q_non_accept_from = None
+                q_accept_from_states = []
+                q_non_accept_from_states = []
                 
                 for (key, value) in transitions.items():
                     state, transition_symbol = key.strip("()").split(',')
@@ -29,23 +29,25 @@ def find_transition_pairs(afn, cross_product):
 
                     if transition_symbol == symbol:
                         if value == q_accept:
-                            q_accept_from = state
+                            q_accept_from_states.append(state)
                         if value == q_non_accept:
-                            q_non_accept_from = state
+                            q_non_accept_from_states.append(state)
                 
-                if q_accept_from and q_non_accept_from:
-                    new_pair = tuple(sorted((q_accept_from, q_non_accept_from)))
-                    if new_pair not in new_pairs:
-                        new_pairs.add(new_pair)
-                        added_new_pairs = True
-                        print(f"Added new pair: {new_pair}")
+                # Generar todas las combinaciones posibles de estados anteriores
+                for q_accept_from in q_accept_from_states:
+                    for q_non_accept_from in q_non_accept_from_states:
+                        new_pair = tuple(sorted((q_accept_from, q_non_accept_from)))
+                        if new_pair not in new_pairs:
+                            new_pairs.add(new_pair)
+                            added_new_pairs = True
+                            print(f"Added new pair: {new_pair}")
 
         if not added_new_pairs:
             break
 
     return list(new_pairs)
 
-# Example usage with the sample AFN
+# Ejemplo de uso con el AFN proporcionado
 afn_example = {
     "Q": ["s", "q1", "q2", "q3"],
     "Σ": ["a", "b"],
@@ -63,9 +65,11 @@ afn_example = {
     }
 }
 
+# Generar el producto cruzado inicial
 initial_cross_product = cross_product_accept_not_accept(afn_example)
-print(initial_cross_product)
+print("Initial cross product:", initial_cross_product)
 
+# Encontrar los nuevos pares basados en las transiciones
 final_pairs = find_transition_pairs(afn_example, initial_cross_product)
 
 print("Final list of pairs:")
