@@ -33,14 +33,14 @@ def find_transition_pairs(afn, cross_product):
                         if value == q_non_accept:
                             q_non_accept_from_states.append(state)
                 
-                # Generar todas las combinaciones posibles de estados anteriores
+                # Generar todas las combinaciones posibles de estados anteriores con el mismo símbolo
                 for q_accept_from in q_accept_from_states:
                     for q_non_accept_from in q_non_accept_from_states:
                         new_pair = tuple(sorted((q_accept_from, q_non_accept_from)))
                         if new_pair not in new_pairs:
                             new_pairs.add(new_pair)
                             added_new_pairs = True
-                            print(f"Added new pair: {new_pair}")
+                            print(f"Added new pair: {new_pair} via symbol: {symbol}")
 
         if not added_new_pairs:
             break
