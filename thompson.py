@@ -64,13 +64,13 @@ def node_to_dict(node, transitions):
                 node_to_dict(tran[1], transitions) 
 
 def nodeCase(right, left):
-    if right.value in ['*','+','.'] and left.value in ['*','+','.']:
+    if right.value in ['*','|','.'] and left.value in ['*','|','.']:
         # Both nodes are operators
         return 0
-    elif right.value in ['*','+','.']:
+    elif right.value in ['*','|','.']:
         # Only right is operator
         return 1
-    elif left.value in ['*','+','.']:
+    elif left.value in ['*','|','.']:
         # Only left is operator
         return 2
     else:
@@ -79,7 +79,7 @@ def nodeCase(right, left):
 
 def make_afd(node, last_start, last_end,Q):
     if node.right is not None and node.left is not None:
-        if node.value == '+':
+        if node.value == '|':
             # Intiating states
             first = afstate.array_init(Q)
             second = afstate.array_init(Q)
@@ -145,10 +145,17 @@ def make_afd(node, last_start, last_end,Q):
         last_start.trans.append((node.value,mid))
         mid.trans.append(('eps',last_end))
             
-
-def thomspon_main(infix, alphabet):
+def get_alphabet(r):
+    alpha = []
+    for i in r:
+        if i not in ['*','|','.']:
+            if i not in alpha:
+                alpha.append(i)
+    return alpha
+def thomspon_main(postfix):
+    alphabet = get_alphabet(postfix)
     transitions = {}
-    root = postfix_to_tree(infix,alphabet)
+    root = postfix_to_tree(postfix,alphabet)
     start = afstate("q0")
     end = afstate("qf")
     Q = [start.name,end.name] 
@@ -158,9 +165,9 @@ def thomspon_main(infix, alphabet):
     node_to_dict(start, transitions)
     afd = {
         "Q": Q,
-        "S": alphabet,
+        "Σ": alphabet,
         "q0": q0,
         "F": F,
-        "D": transitions
+        "δ": transitions
     }
     return afd

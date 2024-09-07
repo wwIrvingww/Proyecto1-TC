@@ -46,7 +46,7 @@ def subsetRecursion(initSate, states, transitions, set_transitions, alpha):
     lock = getLock(initSate, transitions)
     # The starting value is appended to the states array and the array of not yet processed
     states.append(str(lock))
-    notProcessed = [[], lock]
+    notProcessed = [lock]
     while len(notProcessed)!=0: # While there are still states to process
         current = notProcessed.pop() # pops last not processed state
         for let in alpha: # iterate through letters
@@ -72,10 +72,18 @@ def make_state_transitions(state_transitions, set_transitions, set_to_state):
     for i in set_transitions.keys(): # other states
         trans = i.split('|')
         state_transitions["("+set_to_state[trans[0]]+","+trans[1]+")"] = set_to_state[set_transitions[i]]
+
+def is_dead_state(transitions):
+    for key in transitions.keys():
+        if transitions[key] == 'm':
+            return True
+    return False
+        
+    
 def set_main(afn):
     # Step 1: get transitions and alphabet from the afn
-    transitions  = copy.deepcopy(afn['D'])
-    alphabet = copy.deepcopy(afn['S'])
+    transitions  = copy.deepcopy(afn['δ'])
+    alphabet = copy.deepcopy(afn['Σ'])
     # Step 2: make afd in set form
         # New states and new transitions from set agrupation start as empty
     set_states = []
@@ -93,6 +101,12 @@ def set_main(afn):
     state_transitions = {} # will have transitions in the new state form
     make_state_transitions(state_transitions, set_transitions, set_to_state)
     
+    if is_dead_state(state_transitions):
+        for let in alphabet:
+            state_transitions["(m,"+let+")"] = "m"
+    else:
+        renamed_states.remove('m')
+    
     # Step 4: find new initial state and new acceptance states
     spec = getSpecialStates(set_to_state, transitions)
     q0 = spec[0]
@@ -101,10 +115,10 @@ def set_main(afn):
     # Step 5: afd is built
     afd = {
         "Q": renamed_states,
-        "S": alphabet,
+        "Σ": alphabet,
         "q0": q0,
         "F": F,
-        "D": state_transitions
+        "δ": state_transitions
     }
         
     return afd
