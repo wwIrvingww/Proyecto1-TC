@@ -137,33 +137,33 @@ afn_example = {
 }
 
 
-# Generar el producto cruzado inicial
-initial_cross_product = cross_product_accept_not_accept(afn_example)
-print("Initial cross product:\n", initial_cross_product)
+# # Generar el producto cruzado inicial
+# initial_cross_product = cross_product_accept_not_accept(afn_example)
+# print("Initial cross product:\n", initial_cross_product)
 
-# Encontrar los nuevos pares basados en las transiciones
-final_pairs = find_transition_pairs(afn_example, initial_cross_product)
+# # Encontrar los nuevos pares basados en las transiciones
+# final_pairs = find_transition_pairs(afn_example, initial_cross_product)
 
-print("Final list of pairs:\n")
-print(final_pairs)
+# print("Final list of pairs:\n")
+# print(final_pairs)
 
-# States X States
-print("States X states\n")
-states_product = cross_product_states(afn_example)
-print(states_product)
+# # States X States
+# print("States X states\n")
+# states_product = cross_product_states(afn_example)
+# print(states_product)
 
-# Calcular la diferencia
-difference = difference_between_lists(states_product, final_pairs)
-print("Difference:\n")
-print(difference)
+# # Calcular la diferencia
+# difference = difference_between_lists(states_product, final_pairs)
+# print("Difference:\n")
+# print(difference)
 
 
-# Generar el nuevo autómata
-new_automaton = generate_reduced_automaton(afn_example, difference)
-if new_automaton:
-    print("New Automaton:\n", new_automaton)
+# # Generar el nuevo autómata
+# new_automaton = generate_reduced_automaton(afn_example, difference)
+# if new_automaton:
+#     print("New Automaton:\n", new_automaton)
     
-    # Exportar el autómata a un archivo JSON
-    with open('reduced_automaton.json', 'w') as json_file:
-        json.dump(new_automaton, json_file, indent=4)
-        print("El nuevo autómata ha sido exportado a 'reduced_automaton.json'.")
+#     # Exportar el autómata a un archivo JSON
+#     with open('reduced_automaton.json', 'w') as json_file:
+#         json.dump(new_automaton, json_file, indent=4)
+#         print("El nuevo autómata ha sido exportado a 'reduced_automaton.json'.")
