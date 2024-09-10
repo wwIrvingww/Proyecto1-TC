@@ -27,12 +27,22 @@ new_automaton = generate_reduced_automaton(afd, difference)
 
 print("***")
 # por ahora, lo guarda en el finite_deterministic.json
+if afn:
+    print("AFN:\n", afn)
+    
+    with open('finite_non_deterministic.json', 'w') as json_file:
+        json.dump(afn, json_file, indent=4)
+        print("El autómata finito no determinista ha sido exportado a 'finite_non_deterministic.json'.")
+print("*** \n")
+
+print("***")
+# por ahora, lo guarda en el finite_deterministic.json
 if afd:
     print("AFD:\n", afd)
     
     with open('finite_deterministic.json', 'w') as json_file:
         json.dump(afd, json_file, indent=4)
-        print("El nuevo autómata ha sido exportado a 'finite_deterministic.json'.")
+        print("El autómata finito determinista ha sido exportado a 'finite_deterministic.json'.")
 print("*** \n")
 
 print("***")
@@ -46,7 +56,23 @@ if new_automaton:
 print("*** \n")
 
 
-print("***")
-simulate_afd(afd, w)
+
+# Simulación del AFD
+print("*** \nAFD")
+resultado_afd = simulate_afd(afd, w)
+print(f"Resultado: {resultado_afd['resultado']}")
+print(f"Tiempo de ejecución: {resultado_afd['tiempo']} segundos")
+print("Transiciones realizadas:")
+for transicion in resultado_afd["transiciones"]:
+    print(f"{transicion[0]} --({transicion[1]})--> {transicion[2]}")
+print("*** \n")
+
+print("*** \nAFD REDUCIDO")
+resultado_red = simulate_afd(new_automaton, w)
+print(f"Resultado: {resultado_red['resultado']}")
+print(f"Tiempo de ejecución: {resultado_red['tiempo']} segundos")
+print("Transiciones realizadas:")
+for transicion in resultado_red["transiciones"]:
+    print(f"{transicion[0]} --({transicion[1]})--> {transicion[2]}")
 print("*** \n")
 

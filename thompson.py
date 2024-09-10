@@ -171,3 +171,5 @@ def thomspon_main(postfix):
         "δ": transitions
     }
     return afd
+
+thomspon_main('aab|*.a.b.')
