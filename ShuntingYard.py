@@ -10,7 +10,7 @@ def add_concatenation_operator(expression):
             
             # Si el actual es un alfanumérico o cierre de paréntesis
             # y el siguiente es un alfanumérico o apertura de paréntesis
-            if (current.isalnum() or current == '*' or current == ')') and (next_token.isalnum() or next_token == '('):
+            if (current.isalnum() or current == '*' or current == ')' or current == '%') and (next_token.isalnum() or next_token == '(' or next_token == '%'):
                 new_expression.append('.')
     
     return ''.join(new_expression)
@@ -25,7 +25,7 @@ def shunting_yard(expression):
     expression = add_concatenation_operator(expression)
     
     for token in expression:
-        if token.isalnum():  # Si el token es un símbolo del alfabeto
+        if token.isalnum() or token == '%':  # Si el token es un símbolo del alfabeto o epsilon 
             output.append(token)
         elif token == '(':
             operators.append(token)
@@ -49,3 +49,4 @@ def shunting_yard(expression):
     return ''.join(output)
 
 
+shunting_yard('a(%|a)*b')
