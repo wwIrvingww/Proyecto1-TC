@@ -1,3 +1,4 @@
+import graph
 # ----- CLASSES ----- #
 # Tree node class
 class TreeNode:
@@ -112,21 +113,17 @@ def make_afd(node, last_start, last_end,Q):
             # Depending on the case (letter or operation), how the last_start
             # is conected to first and second
             case = nodeCase(node.right, node.left)
-            
+            second.trans.append(('eps',last_end))
             if case == 0: # Both Operators
-                second.trans.append(('eps',last_end))
                 make_afd(node.left, last_start, first, Q)
                 make_afd(node.right, first, second, Q)
             elif case == 1: # Right is operator
                 last_start.trans.append((node.left.value,first))
-                first.trans.append((node.right.value,second))
-                make_afd(node.right, second, last_end, Q)
+                make_afd(node.right, first, second, Q)
             elif case == 2: # Left is operator
-                second.trans.append(('eps',last_end))
                 first.trans.append((node.right.value,second))
                 make_afd(node.left, last_start, first, Q)
             else: # None operators
-                second.trans.append(('eps',last_end))
                 last_start.trans.append((node.left.value,first))
                 first.trans.append((node.right.value,second))
          
@@ -172,4 +169,4 @@ def thomspon_main(postfix):
     }
     return afd
 
-thomspon_main('aab|*.a.b.')
+print(thomspon_main('aab|*.'))
