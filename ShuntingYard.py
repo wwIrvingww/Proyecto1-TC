@@ -47,6 +47,3 @@ def shunting_yard(expression):
     print("Postfix: ", ''.join(output))
     
     return ''.join(output)
-
-
-shunting_yard('a(%|a)*b')
