@@ -1,4 +1,3 @@
-import graph
 # ----- CLASSES ----- #
 # Tree node class
 class TreeNode:
@@ -168,5 +167,3 @@ def thomspon_main(postfix):
         "δ": transitions
     }
     return afd
-
-print(thomspon_main('aab|*.'))
