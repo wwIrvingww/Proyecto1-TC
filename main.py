@@ -2,7 +2,7 @@ from ShuntingYard import shunting_yard
 from thompson import get_alphabet, thomspon_main
 from subset import set_main
 from Hopcroft import cross_product_accept_not_accept, find_transition_pairs, cross_product_states, generate_reduced_automaton, difference_between_lists
-from simulacion import simulate_afd
+from simulacion import simulate_afd, simulate_afn
 import json
 
 r = input("Ingresa la expresión regular: ")
@@ -67,6 +67,7 @@ for transicion in resultado_afd["transiciones"]:
     print(f"{transicion[0]} --({transicion[1]})--> {transicion[2]}")
 print("*** \n")
 
+# Simulación del AFD reducido
 print("*** \nAFD REDUCIDO")
 resultado_red = simulate_afd(new_automaton, w)
 print(f"Resultado: {resultado_red['resultado']}")
@@ -75,4 +76,10 @@ print("Transiciones realizadas:")
 for transicion in resultado_red["transiciones"]:
     print(f"{transicion[0]} --({transicion[1]})--> {transicion[2]}")
 print("*** \n")
+
+#Simulacion del AFN
+print("*** \nAFN")
+simulate_afn(afn,w)
+
+
 
