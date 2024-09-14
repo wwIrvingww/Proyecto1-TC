@@ -12,7 +12,7 @@ def getLock(state, transitions):
         for ste in last:
             for key, item in transitions.items():
                 tem = key.strip("()").split(",")
-                if tem[0] == ste and tem[1]=='eps':
+                if tem[0] == ste and tem[1]=='%':
                     lock.extend([item for item in item if item not in lock])
     return lock
 
@@ -84,6 +84,7 @@ def set_main(afn):
     # Step 1: get transitions and alphabet from the afn
     transitions  = copy.deepcopy(afn['δ'])
     alphabet = copy.deepcopy(afn['Σ'])
+    alphabet.remove('%')
     # Step 2: make afd in set form
         # New states and new transitions from set agrupation start as empty
     set_states = []

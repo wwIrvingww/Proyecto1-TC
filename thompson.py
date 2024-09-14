@@ -85,8 +85,8 @@ def make_afd(node, last_start, last_end,Q):
             second = afstate.array_init(Q)
             
             # Creates transitions for + operation
-            first.trans.append(('eps' ,last_end))
-            second.trans.append(('eps' ,last_end))
+            first.trans.append(('%' ,last_end))
+            second.trans.append(('%' ,last_end))
             
             # Depending on the case (letter or operation), how the last_start
             # is conected to first and second
@@ -112,7 +112,7 @@ def make_afd(node, last_start, last_end,Q):
             # Depending on the case (letter or operation), how the last_start
             # is conected to first and second
             case = nodeCase(node.right, node.left)
-            second.trans.append(('eps',last_end))
+            second.trans.append(('%',last_end))
             if case == 0: # Both Operators
                 make_afd(node.left, last_start, first, Q)
                 make_afd(node.right, first, second, Q)
@@ -130,8 +130,8 @@ def make_afd(node, last_start, last_end,Q):
         # Node only has one son at the left, meaning its a * operator
         if node.value == '*':
             # Connects start to end and viceversa
-            last_start.trans.append(('eps',last_end))
-            last_end.trans.append(('eps',last_start))
+            last_start.trans.append(('%',last_end))
+            last_end.trans.append(('%',last_start))
             # continues recursivenes form the son at the left
             make_afd(node.left, last_start, last_end, Q)
     elif node is not None:
@@ -139,7 +139,7 @@ def make_afd(node, last_start, last_end,Q):
         # Means its the only son of a * operator
         mid = afstate.array_init(Q)
         last_start.trans.append((node.value,mid))
-        mid.trans.append(('eps',last_end))
+        mid.trans.append(('%',last_end))
             
 def get_alphabet(r):
     alpha = []
