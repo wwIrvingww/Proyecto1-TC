@@ -55,7 +55,7 @@ def epsilon_cerradura(afd, estados):
 
     while stack:
         estado = stack.pop()
-        transicion_eps = f"({estado},eps)"
+        transicion_eps = f"({estado},%)"
         
         if transicion_eps in afd["δ"]:
             for siguiente_estado in afd["δ"][transicion_eps]:
