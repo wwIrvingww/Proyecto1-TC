@@ -22,9 +22,16 @@ estado_inicial = afd["q0"]
 
 
 initial_cross_product = cross_product_accept_not_accept(afd)
+# print('Producto cruzado inicial:\n', initial_cross_product)
 final_pairs = find_transition_pairs(afd, initial_cross_product)
+# print("Final list of pairs:\n")
+# print(final_pairs)
 states_product = cross_product_states(afd)
+# print("States X states\n")
+# print(states_product)
 difference = difference_between_lists(states_product, final_pairs, estado_inicial)
+# print('Difference: \n')
+# print(difference)
 new_automaton = generate_reduced_automaton(afd, difference)
 
 print("***")
@@ -82,6 +89,3 @@ print("*** \n")
 #Simulacion del AFN
 print("*** \nAFN")
 simulate_afn(afn,w)
-
-
-
