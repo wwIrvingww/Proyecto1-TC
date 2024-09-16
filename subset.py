@@ -84,7 +84,11 @@ def set_main(afn):
     # Step 1: get transitions and alphabet from the afn
     transitions  = copy.deepcopy(afn['δ'])
     alphabet = copy.deepcopy(afn['Σ'])
-    alphabet.remove('%')
+
+    if '%' in alphabet:
+        alphabet.remove('%')
+
+    # alphabet.remove('%')
     # Step 2: make afd in set form
         # New states and new transitions from set agrupation start as empty
     set_states = []

@@ -12,7 +12,11 @@ def find_transition_pairs(afn, cross_product):
     transitions = afn["δ"]
     alphabet = afn["Σ"]
     
-    new_pairs = set(tuple(sorted(pair)) for pair in cross_product)  # Ordena los pares al agregarlos al set
+    # Eliminar epsilon del alfabeto si está presente
+    if '%' in alphabet:
+        alphabet.remove('%')
+    
+    new_pairs = set(tuple(sorted(pair)) for pair in cross_product)
 
     while True:
         added_new_pairs = False
@@ -59,7 +63,7 @@ def cross_product_states(afn):
     
     return cross_product
 
-def difference_between_lists(A, B):
+def difference_between_lists(A, B, estado_inicial):
     # Convertir cada par en un conjunto ordenado para ignorar el orden
     set_A = {tuple(sorted(pair)) for pair in A}
     set_B = {tuple(sorted(pair)) for pair in B}
@@ -67,8 +71,14 @@ def difference_between_lists(A, B):
     # Calcular la diferencia
     difference = set_A - set_B
 
+    # Asegurarse de que el estado inicial esté en la diferencia
+    for pair in set_A:
+        if estado_inicial in pair:
+            difference.add(pair)
+    
     # Convertir de nuevo a una lista de tuplas
     return list(difference)
+
 
 
 # Generate the reduced automaton
@@ -84,37 +94,50 @@ def generate_reduced_automaton(afn, difference):
 
     # Generar nuevos estados
     for i, pair in enumerate(difference):
-        state_name = chr(65 + i)  # Genera nombres de estado como A, B, C, etc.
+        state_name = chr(65 + i)
+        print(f"Mapeando el par {pair} al nuevo estado {state_name}")
         state_mapping[pair] = state_name
+        
+        # Verificar si alguno de los estados en el par es el estado inicial original
         if afn["q0"] in pair:
             new_initial_state = state_name
+            print(f"Estado inicial encontrado: {new_initial_state}")
+        
+        # Asignar estados finales
         if any(state in afn["F"] for state in pair):
             new_accepting_states.add(state_name)
+
+    # Asegurarse de que el estado inicial no sea None
+    if new_initial_state is None:
+        print("Error: No se ha encontrado un estado inicial.")
+        return None
 
     # Mapear transiciones
     for pair, new_state in state_mapping.items():
         for state in pair:
             for symbol in afn["Σ"]:
-                # Buscar el estado al que transiciona el estado actual con el símbolo
                 transition_key = f"({state},{symbol})"
                 if transition_key in afn["δ"]:
                     target_state = afn["δ"][transition_key]
-                    # Buscar el nuevo estado correspondiente al estado de destino
                     for target_pair, target_new_state in state_mapping.items():
                         if target_state in target_pair:
                             new_transition_key = f"({new_state},{symbol})"
                             new_transitions[new_transition_key] = target_new_state
+                            print(f"Mapeando transición {transition_key} -> {new_transition_key}")
 
     # Construir el nuevo autómata
     new_automaton = {
         "Q": list(state_mapping.values()),
         "Σ": afn["Σ"],
-        "q0": new_initial_state,
+        "q0": new_initial_state,  # Estado inicial correcto
         "F": list(new_accepting_states),
         "δ": new_transitions
     }
 
+    print("Nuevo autómata generado correctamente.")
     return new_automaton
+
+
 
 
 # Ejemplo de uso con el AFN proporcionado
