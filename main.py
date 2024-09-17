@@ -1,72 +1,47 @@
 from ShuntingYard import shunting_yard
 from thompson import get_alphabet, thomspon_main
 from subset import set_main
-from Hopcroft import cross_product_accept_not_accept, find_transition_pairs, cross_product_states, generate_reduced_automaton, difference_between_lists
+from Hopcroft import hopcroft_minimization
 from simulacion import simulate_afd, simulate_afn
 import json
 
 r = input("Ingresa la expresión regular: ")
 w = input("Ingresa la cadena a validar: ")
 
-
 print("\n***")
 # Convierte a postfix
 postfix = shunting_yard(r)
 print("*** \n")
 
-# convierte a no determinista
+# Convierte a no determinista
 afn = thomspon_main(postfix)
-# convierte a determinista
+
+# Convierte a determinista
 afd = set_main(afn)
-estado_inicial = afd["q0"]
 
-
-initial_cross_product = cross_product_accept_not_accept(afd)
-# print('Producto cruzado inicial:\n', initial_cross_product)
-final_pairs = find_transition_pairs(afd, initial_cross_product)
-# print("Final list of pairs:\n")
-# print(final_pairs)
-states_product = cross_product_states(afd)
-# print("States X states\n")
-# print(states_product)
-difference = difference_between_lists(states_product, final_pairs, estado_inicial)
-# print('Difference: \n')
-# print(difference)
-new_automaton = generate_reduced_automaton(afd, difference)
+# Utiliza el algoritmo de Hopcroft para minimizar el AFD
+new_automaton = hopcroft_minimization(afd)
 
 print("***")
-# por ahora, lo guarda en el finite_deterministic.json
+# Guarda el AFN en un archivo JSON
 if afn:
     print("AFN:\n", afn)
-    
     with open('finite_non_deterministic.json', 'w') as json_file:
         json.dump(afn, json_file, indent=4)
         print("El autómata finito no determinista ha sido exportado a 'finite_non_deterministic.json'.")
 print("*** \n")
 
 print("***")
-# por ahora, lo guarda en el finite_deterministic.json
+# Guarda el AFD en un archivo JSON
 if afd:
     print("AFD:\n", afd)
-    
-    with open('finite_deterministic.json', 'w') as json_file:
-        json.dump(afd, json_file, indent=4)
-        print("El autómata finito determinista ha sido exportado a 'finite_deterministic.json'.")
-print("*** \n")
-
-print("***")
-if new_automaton:
-    print("New Automaton:\n", new_automaton)
-    
-    # Exportar el autómata a un archivo JSON
+    # Guardar el autómata minimizado en un archivo JSON
     with open('reduced_automaton.json', 'w') as json_file:
         json.dump(new_automaton, json_file, indent=4)
-        print("El nuevo autómata ha sido exportado a 'reduced_automaton.json'.")
+    print("El nuevo autómata ha sido exportado a 'reduced_automaton.json'.")
 print("*** \n")
 
-
-
-# Simulación del AFD
+# Simulación del AFD original
 print("*** \nAFD")
 resultado_afd = simulate_afd(afd, w)
 print(f"Resultado: {resultado_afd['resultado']}")
@@ -86,6 +61,6 @@ for transicion in resultado_red["transiciones"]:
     print(f"{transicion[0]} --({transicion[1]})--> {transicion[2]}")
 print("*** \n")
 
-#Simulacion del AFN
+# Simulación del AFN
 print("*** \nAFN")
-simulate_afn(afn,w)
+simulate_afn(afn, w)
