@@ -29,7 +29,7 @@ print("***")
 # 6.1 afn
 if afn:
     print("AFN:\n", afn) # Se imprime
-    with open('finite_non_deterministic.json', 'w') as json_file: # Se guarda en JSON
+    with open('./automatas/finite_non_deterministic.json', 'w') as json_file: # Se guarda en JSON
         json.dump(afn, json_file, indent=4)
         print("El autómata finito no determinista ha sido exportado a 'finite_non_deterministic.json'.")
 print("*** \n")
@@ -38,7 +38,7 @@ print("***")
 # 6.2 afd no reducido
 if afd:
     print("AFD:\n", afd) # Se imprime
-    with open('deterministic_automaton.json', 'w') as json_file: # Se guarda en JSON
+    with open('./automatas/deterministic_automaton.json', 'w') as json_file: # Se guarda en JSON
         json.dump(afd, json_file, indent=4)
     print("El nuevo autómata ha sido exportado a 'deterministic_automaton.json'.")
 print("*** \n")
@@ -47,7 +47,7 @@ print("***")
 # 6.3 afd reducido
 if afd:
     print("Reduced:\n", new_automaton) # Se imprime
-    with open('reduced_automaton.json', 'w') as json_file: # Se guarda en JSON
+    with open('./automatas/reduced_automaton.json', 'w') as json_file: # Se guarda en JSON
         json.dump(new_automaton, json_file, indent=4)
     print("El nuevo autómata ha sido exportado a 'reduced_automaton.json'.")
 print("*** \n")
