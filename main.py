@@ -36,6 +36,16 @@ print("***")
 if afd:
     print("AFD:\n", afd)
     # Guardar el autómata minimizado en un archivo JSON
+    with open('deterministic_automaton.json', 'w') as json_file:
+        json.dump(afd, json_file, indent=4)
+    print("El nuevo autómata ha sido exportado a 'deterministic_automaton.json'.")
+print("*** \n")
+
+print("***")
+# Guarda el AFD en un archivo JSON
+if afd:
+    print("Reduced:\n", new_automaton)
+    # Guardar el autómata minimizado en un archivo JSON
     with open('reduced_automaton.json', 'w') as json_file:
         json.dump(new_automaton, json_file, indent=4)
     print("El nuevo autómata ha sido exportado a 'reduced_automaton.json'.")
@@ -64,3 +74,4 @@ print("*** \n")
 # Simulación del AFN
 print("*** \nAFN")
 simulate_afn(afn, w)
+print("*** \n")
