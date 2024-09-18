@@ -6,7 +6,7 @@ def simulate_afd(afd, w):
     transiciones_realizadas = []  
     
     # Medir el tiempo de ejecución
-    start_time = time.time()
+    start_time = round(time.time() * 1000)
     
     # Procesar cada símbolo de la cadena de entrada
     for simbolo in w:
@@ -22,29 +22,29 @@ def simulate_afd(afd, w):
         else:
             # No hay transición válida, la cadena no es aceptada
             print(f"No hay transición para el estado {estado_actual} con el símbolo {simbolo}.")
-            end_time = time.time()
+            end_time = int(round(time.time() * 1000))
             tiempo_ejecucion = end_time - start_time
             return {
                 "resultado": "NO",
-                "tiempo": f"{tiempo_ejecucion:.8f}",  # Tiempo con 8 decimales
+                "tiempo": f"{tiempo_ejecucion} ms",  
                 "transiciones": transiciones_realizadas
             }
     
     # Verificar si el estado actual es un estado de aceptación
     if estado_actual in afd["F"]:
-        end_time = time.time()
+        end_time = round(time.time() * 1000)
         tiempo_ejecucion = end_time - start_time
         return {
             "resultado": "SÍ",
-            "tiempo": f"{tiempo_ejecucion:.10f}",  
+            "tiempo": f"{tiempo_ejecucion} ms",  
             "transiciones": transiciones_realizadas
         }
     else:
-        end_time = time.time()
+        end_time = round(time.time() * 1000)
         tiempo_ejecucion = end_time - start_time
         return {
             "resultado": "NO",
-            "tiempo": f"{tiempo_ejecucion:.10f}",  #
+            "tiempo": f"{tiempo_ejecucion} ms",  
             "transiciones": transiciones_realizadas
         }
 
@@ -72,7 +72,7 @@ def simulate_afn(afn, w):
     transiciones_realizadas = []
     
     # Medir el tiempo de ejecución
-    start_time = time.time()
+    start_time = round(time.time() * 1000)
     
     # Procesar cada símbolo de la cadena de entrada
     for simbolo in w:
@@ -92,14 +92,14 @@ def simulate_afn(afn, w):
     
     # Verificamos si algún estado actual es de aceptación
     es_aceptado = any(estado in afn["F"] for estado in estados_actuales)
-    end_time = time.time()
+    end_time = round(time.time() * 1000)
     tiempo_de_ejecucion  = end_time - start_time
 
     # Mostrar resultado
     if es_aceptado:
-        print(f"Resultado: SÍ \nTiempo:" f"{tiempo_de_ejecucion:.10f}")
+        print(f"Resultado: SÍ \nTiempo:" f"{tiempo_de_ejecucion} ms")
     else:
-        print(f"Resultado: NO")
+        print(f"Resultado: NO \nTiempo:" f"{tiempo_de_ejecucion} ms")
 
     print("Transiciones realizadas:")
     for transicion in transiciones_realizadas:
