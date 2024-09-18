@@ -4,7 +4,7 @@ from subset import set_main
 from Hopcroft import hopcroft_minimization
 from simulacion import simulate_afd, simulate_afn
 import json
-
+import graph
 r = input("Ingresa la expresión regular: ")
 w = input("Ingresa la cadena a validar: ")
 
@@ -21,7 +21,6 @@ afd = set_main(afn)
 
 # Utiliza el algoritmo de Hopcroft para minimizar el AFD
 new_automaton = hopcroft_minimization(afd)
-
 print("***")
 # Guarda el AFN en un archivo JSON
 if afn:
@@ -75,3 +74,5 @@ print("*** \n")
 print("*** \nAFN")
 simulate_afn(afn, w)
 print("*** \n")
+
+graph.graph_main(new_automaton)
