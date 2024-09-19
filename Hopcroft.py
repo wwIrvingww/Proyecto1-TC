@@ -7,10 +7,7 @@ def initial_partition(afd):
     
     # Create the initial partition
     partitions = [accepting_states, non_accepting_states]
-    
-    # Debug: print partitions
-    print(f"Initial partitions: {partitions}")
-    
+        
     return partitions
 
 def refine_partitions(afd, partitions):
